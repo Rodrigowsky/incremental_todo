@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Version 4</title>
+  </head>
+  <body>
+    <script>
+      
+
+      var todos = [
+        {todoTex: 'Item 1', completed: false},
+        {todoTex: 'Item 2', completed: false},
+        {todoTex: 'Item 3', completed: false}
+      ];
+
+      console.log(todos);
+
+      
+      const add = (initialTodoText) => {
+        todos.push({todoText: initialTodoText, completed: false});
+        console.log(todos);
+      };
+
+ 
+      function edit(position, editedTodoText) {
+        todos[position]['todoTex'] = editedTodoText;
+        console.log(todos);
+      }
+
+      function remove(position) {
+        todos.splice(position, 1);
+        console.log(todos);
+      }
+
+      function toogle(position) {
+        todos[position].completed ? todos[position].completed = false : todos[position].completed = true;
+      }
+  
+      
+    </script>
+  </body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Version 13</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <input id="add-input" placeholder="add a todo" />
+    <button id="add-btn">Adding a Todo</button>
+
+    <div>
+      <button id="toggle-all-btn">Toggle the Todos</button>
+    </div>
+
+    <ul id="list-ul"></ul>
+
+    <script>
+  
+
+      let myStorage = window.sessionStorage;
+
+    
+      const add = () => {
+        if (addInput.value) {
+          let keys = Object.keys(myStorage);
+          let index;
+          if (keys.length === 0) {
+            index = 0;
+          } else {
+            index = Math.max(...keys) + 0.1;
+          }
+
+          myStorage.setItem(
+            index,
+            JSON.stringify({ todoText: addInput.value, completed: false })
+          );
+        } else {
+          console.log("You cannot add nothing as a todo");
+        }
+
+        addInput.value = "";
+        displayTodos();
+      };
+
+
+
+      function edit(event) {
+        let editedTodo = prompt("Edit");
+        if (editedTodo) {
+          let id = event.currentTarget.id;
+          //split instead of match would be ideal
+          let key = id.match(/-(?<match>.*)/)[1];
+
+          myStorage.setItem(
+            key,
+            JSON.stringify({ todoText: editedTodo, completed: false })
+          );
+
+          displayTodos();
+        } else {
+          //Do Nothing;
+        }
+      }
+
+      function remove(event) {
+        let id = event.currentTarget.id;
+        //split instead of match would be ideal
+        let key = id.match(/-(?<match>.*)/)[1];
+
+        myStorage.removeItem(key);
+        displayTodos();
+      }
+
+      function toggle(event) {
+        let id = event.currentTarget.id;
+        //split instead of match would be ideal
+        let key = id.match(/-(?<match>.*)/)[1];
+        let text = JSON.parse(myStorage.getItem(key)).todoText;
+
+        JSON.parse(myStorage.getItem(key)).completed
+          ? myStorage.setItem(
+              key,
+              JSON.stringify({ todoText: text, completed: false })
+            )
+          : myStorage.setItem(
+              key,
+              JSON.stringify({ todoText: text, completed: true })
+            );
+
+        displayTodos();
+      }
+
+      function displayTodos() {
+        //list1.replaceChildren();
+        list1.innerHTML = "";
+        let keysArray = Object.keys(myStorage);
+        keysArray.sort(function (a, b) {
+          return a - b;
+        });
+        for (const key of keysArray) {
+          const item = document.createElement("li");
+          const removeBtn = document.createElement("button");
+          const toggleBtn = document.createElement("button");
+          const editBtn = document.createElement("button");
+
+          removeBtn.id = "remove-" + key;
+          toggleBtn.id = "toggle-" + key;
+          editBtn.id = "edit-" + key;
+
+          removeBtn.innerText = "Remove";
+          removeBtn.addEventListener("click", remove);
+          toggleBtn.innerText = "Toggle";
+          toggleBtn.addEventListener("click", toggle);
+          editBtn.innerText = "Edit";
+          editBtn.addEventListener("click", edit);
+
+          let text = JSON.parse(myStorage.getItem(key)).todoText;
+
+          item.innerHTML = `${
+            JSON.parse(myStorage.getItem(key)).completed ? "[x]" : "[ ]"
+          }  ${text}`;
+
+          list1.appendChild(item);
+          item.appendChild(toggleBtn);
+          item.appendChild(editBtn);
+          item.appendChild(removeBtn);
+        }
+      }
+
+      function toggleAll() {
+        let allTrue; // =  todos.every((element) => element.completed === true);
+        let keysArray = Object.keys(myStorage);
+
+        for (const [key] of Object.entries(myStorage)) {
+          if (JSON.parse(myStorage.getItem(key)).completed === false) {
+            allTrue = false;
+            break;
+          }
+          allTrue = true;
+        }
+
+        if (allTrue) {
+          keysArray.forEach((key) => {
+            let text = JSON.parse(myStorage.getItem(key)).todoText;
+            myStorage.setItem(
+              key,
+              JSON.stringify({ todoText: text, completed: false })
+            );
+          });
+        } else {
+          keysArray.forEach((key) => {
+            let text = JSON.parse(myStorage.getItem(key)).todoText;
+            myStorage.setItem(
+              key,
+              JSON.stringify({ todoText: text, completed: true })
+            );
+          });
+        }
+
+        displayTodos();
+      }
+
+      const btnToggle = document.getElementById("toggle-all-btn");
+
+      btnToggle.addEventListener("click", toggleAll);
+
+      const addBtn = document.getElementById("add-btn");
+
+      addBtn.addEventListener("click", add);
+
+      const list1 = document.getElementById("list-ul");
+
+      var addInput = document.getElementById("add-input");
+
+      window.addEventListener("load", displayTodos);
+    </script>
+  </body>
+</html>

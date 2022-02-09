@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Version 7</title>
+  </head>
+
+  <body>
+    <button id="display-btn">DisplayTodos</button>
+    <button id="toggle-all-btn">Toggle the Todos</button>
+    <script>
+   
+
+    var todos = [
+      { todoTex: "Item 1", completed: false },
+      { todoTex: "Item 2", completed: false },
+      { todoTex: "Item 3", completed: false },
+    ];
+
+    
+    const add = (initialTodoText) => {
+      todos.push({ todoText: initialTodoText, completed: false });
+      displayTodos();
+    };
+
+    
+    function edit(position, editedTodoText) {
+      todos[position]["todoTex"] = editedTodoText;
+      displayTodos();
+    }
+
+    function remove(position) {
+      todos.splice(position, 1);
+      displayTodos();
+    }
+
+    function toogle(position) {
+      todos[position].completed
+        ? (todos[position].completed = false)
+        : (todos[position].completed = true);
+    }
+
+    function displayTodos() {
+      todos.forEach((element) => {
+        console.log(`${element.todoTex}:${element.completed}`);
+      });
+    }
+
+    function toggleAll() {
+      const allTrue = todos.every((element) => element.completed === true);
+
+      if (allTrue) {
+        todos.forEach((element) => {
+          element.completed = false;
+        });
+      } else {
+        todos.forEach((element) => {
+          element.completed = true;
+        });
+      }
+    }
+
+    const btn = document.getElementById("display-btn");
+
+    btn.addEventListener("click", displayTodos);
+
+    const btnToggle = document.getElementById("toggle-all-btn");
+
+    btnToggle.addEventListener("click", toggleAll);
+  </script>
+  </body>
+</html>

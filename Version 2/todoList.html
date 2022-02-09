@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Version 2</title>
+  </head>
+  <body>
+    <script>
+      
+      var todos = ["Item1", "Item2", "Item3"];
+      
+      console.log(todos);
+    
+
+      const add = (data) => {
+        todos.push(data);
+        console.log(todos);
+      };
+
+      function edit(position, newValue) {
+        todos[position] = newValue;
+        console.log(todos);
+      }
+
+      function remove(position) {
+        todos.splice(position, 1);
+        console.log(todos);
+      }
+    </script>
+  </body>
+</html>

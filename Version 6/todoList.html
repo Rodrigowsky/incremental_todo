@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Version 6</title>
+  </head>
+  <body>
+    <script>
+    
+
+      var todos = [
+        { todoTex: "Item 1", completed: false },
+        { todoTex: "Item 2", completed: false },
+        { todoTex: "Item 3", completed: false },
+      ];
+
+      displayTodos();
+
+    
+      const add = (initialTodoText) => {
+        todos.push({ todoText: initialTodoText, completed: false });
+        displayTodos();
+      };
+
+     
+      function edit(position, editedTodoText) {
+        todos[position]["todoTex"] = editedTodoText;
+        displayTodos();
+      }
+
+      function remove(position) {
+        todos.splice(position, 1);
+        displayTodos();
+      }
+
+      function toogle(position) {
+        todos[position].completed
+          ? (todos[position].completed = false)
+          : (todos[position].completed = true);
+      }
+
+      function displayTodos() {
+        todos.forEach((element) => {
+          console.log(`${element.todoTex}:${element.completed}`);
+        });
+      }
+
+      function toggleAll() {
+        const allTrue = todos.every((element) => element.completed === true);
+
+        if (allTrue) {
+          todos.forEach((element) => {
+            element.completed = false;
+          });
+        } else {
+          todos.forEach((element) => {
+          element.completed = true;
+        });
+        }
+
+        
+      }
+    </script>
+  </body>
+</html>
